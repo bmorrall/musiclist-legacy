@@ -1,0 +1,4 @@
+# switch to default ruby version when exiting directory
+rvm_project_rvmrc_default=1
+# Using rails-1.9.2-p290
+rvm ruby-1.9.2-p290@musiclist --create
