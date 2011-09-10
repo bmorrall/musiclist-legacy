@@ -5,6 +5,10 @@
   <%= @album.title %>
 </p>
 
+<p>
+  <b>Artist:</b>
+  <%= link_to @album.artist.name, artist_path(@album.artist) %>
+</p>
 
 <%= link_to 'Edit', edit_album_path(@album) %> |
 <%= link_to 'Back', albums_path %>

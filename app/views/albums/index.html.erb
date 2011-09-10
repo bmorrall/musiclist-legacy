@@ -3,21 +3,27 @@
 <%= meta_keywords 'albums', 'CDs', 'wishlist' %>
 
 <table>
+  <thead>
   <tr>
     <th>Title</th>
+    <th>Artist</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
+  </thead>
 
+  <tbody>
 <% @albums.each do |album| %>
   <tr>
-    <td><%= album.title %></td>
+    <th><%= album.title %></th>
+    <td><%= album.artist.name %></td>
     <td><%= link_to 'Show', album %></td>
     <td><%= link_to 'Edit', edit_album_path(album) %></td>
     <td><%= link_to 'Destroy', album, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
+  </tbody>
 </table>
 
 <br />
