@@ -2,7 +2,9 @@ class Admin::RsImportsController < ApplicationController
   # GET /admin/rs_imports
   # GET /admin/rs_imports.json
   def show
-    @admin_rs_import = Admin::RsImport.new
+    @playlist = Admin::RsImport.create_playlist
+    order = (@playlist.playlist_albums.maximum(:order) || 0) + 1
+    @admin_rs_import = Admin::RsImport.new(:order => order)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -13,13 +15,14 @@ class Admin::RsImportsController < ApplicationController
   # PUT /admin/rs_imports
   # PUT /admin/rs_imports.json
   def create
+    @playlist = Admin::RsImport.create_playlist
     @admin_rs_import = Admin::RsImport.new(params[:admin_rs_import])
 
     if @admin_rs_import.valid?
       @album = @admin_rs_import.create_album!
 
       respond_to do |format|
-        format.html { redirect_to admin_rs_imports_path, notice: 'Album was successfully created.' }
+        format.html { redirect_to admin_rs_imports_path, notice: "Album '#{@album.artist.name} - #{@album.title}' was successfully created." }
         format.json { render :json => @album, :status => :created, :location => @album }
       end
     else
