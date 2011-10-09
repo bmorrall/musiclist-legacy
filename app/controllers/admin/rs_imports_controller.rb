@@ -16,15 +16,17 @@ class Admin::RsImportsController < ApplicationController
     @admin_rs_import = Admin::RsImport.new(params[:admin_rs_import])
 
     if @admin_rs_import.valid?
-      @album = Album.new # TODO: Generate
+      @album = @admin_rs_import.create_album!
 
       respond_to do |format|
         format.html { redirect_to admin_rs_imports_path, notice: 'Album was successfully created.' }
-        format.json { render json: @album, status: :created, location: @album }
+        format.json { render :json => @album, :status => :created, :location => @album }
       end
     else
-      format.html { render action: "show" }
-      format.json { render json: @admin_rs_import.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        format.html { render :action => "show" }
+        format.json { render :json => @admin_rs_import.errors, :status => :unprocessable_entity }
+      end
     end
   end
 end
