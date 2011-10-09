@@ -1,4 +1,8 @@
 Musiclist::Application.routes.draw do
+  namespace :admin do
+    resource :rs_imports, :only => [:show, :create]
+  end
+
   resources :playlists
 
   ActiveAdmin.routes(self)
