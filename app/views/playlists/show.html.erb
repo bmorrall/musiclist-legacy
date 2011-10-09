@@ -5,6 +5,24 @@
   <%= @playlist.name %>
 </p>
 
+<% unless @playlist_albums.empty? %>
+<h2>Albums</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @playlist_albums.each do |a| %>
+    <tr>
+      <td class="number"><%= a.order %></td>
+      <td><%= a.album.title %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+<% end %>
 
 <%= link_to 'Edit', edit_playlist_path(@playlist) %> |
 <%= link_to 'Back', playlists_path %>
