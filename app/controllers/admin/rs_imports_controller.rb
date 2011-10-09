@@ -1,4 +1,6 @@
 class Admin::RsImportsController < ApplicationController
+  before_filter :authenticate_admin_user!
+
   # GET /admin/rs_imports
   # GET /admin/rs_imports.json
   def show
