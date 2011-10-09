@@ -20,6 +20,10 @@ gem 'jquery-rails'
 
 gem 'formtastic'
 
+# Use ActiveAdmin for Admin tasks
+gem 'activeadmin'
+gem "meta_search",    '>= 1.1.0.pre'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
