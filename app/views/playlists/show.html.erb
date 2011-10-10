@@ -10,7 +10,9 @@
 <table>
   <thead>
     <tr>
-      <th>#</th><th>Title</th>
+      <th>#</th>
+      <th><%= link_to 'Album', url_for(:order => 'album') %></th>
+      <th><%= link_to 'Artist', url_for(:order => 'artist') %></th>
     </tr>
   </thead>
   <tbody>
