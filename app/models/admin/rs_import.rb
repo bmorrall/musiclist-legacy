@@ -14,7 +14,7 @@ class Admin::RsImport < FormtasticFauxModel
   end
 
   def clean_artist
-    artist.downcase.gsub(/\b\w/){$&.upcase}
+    artist.downcase.gsub(/\b\w/){$&.upcase}.gsub(',', ', ').squeeze(' ').chomp(' ')
   end
 
   def clean_album
