@@ -5,8 +5,8 @@ class Admin::RsImportsController < ApplicationController
   # GET /admin/rs_imports.json
   def show
     @playlist = Admin::RsImport.create_playlist
-    order = (@playlist.playlist_albums.maximum(:order) || 0) + 1
-    @admin_rs_import = Admin::RsImport.new(:order => order)
+    position = (@playlist.playlist_albums.maximum(:position) || 0) + 1
+    @admin_rs_import = Admin::RsImport.new(:position => position)
 
     respond_to do |format|
       format.html # new.html.erb
