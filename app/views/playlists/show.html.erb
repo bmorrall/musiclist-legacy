@@ -1,18 +1,11 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Name:</b>
-  <%= @playlist.name %>
-</p>
-
+<% title @playlist.name, false %>
+<%= content_tag :h2, @playlist.name %>
 <% unless @playlist_albums.empty? %>
-<h2>Albums</h2>
 <table class="condensed-table zebra-striped">
   <thead>
     <tr>
-      <th>#</th>
-      <th><%= link_to 'Album', url_for(:order => 'album') %></th>
-      <th><%= link_to 'Artist', url_for(:order => 'artist') %></th>
+      <th>&nbsp;</th>
+      <th><span class="helper">Sort:</span> <%= link_to 'Position', url_for(:order => nil) %> | <%= link_to 'Artist', url_for(:order => 'artist') %> | <%= link_to 'Album', url_for(:order => 'album') %></th>
     </tr>
   </thead>
   <tbody>

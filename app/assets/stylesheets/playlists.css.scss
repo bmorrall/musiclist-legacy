@@ -3,5 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 tr span.artist {
+  font-weight: bold;
   font-weight: 600;
+}
+
+td.number {
+  text-align: right;
+}
+
+thead .helper {
+  font-weight: normal;
 }
