@@ -19,8 +19,7 @@
 <% @playlist_albums.each do |a| %>
     <tr>
       <td class="number"><%= a.position %></td>
-      <td><%= a.album.title %></td>
-      <td><%= a.album.artist.display_name %></td>
+      <td colspan="2"><span class="artist"><%= a.album.artist.display_name %></span> - <%= a.album.title %></td>
     </tr>
 <% end %>
   </tbody>
