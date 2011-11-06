@@ -4,9 +4,9 @@ class PlaylistsController < InheritedResources::Base
     @playlist_albums = @playlist.playlist_albums.includes(:album => [:artist])
     case params[:order]
     when 'album'
-      @playlist_albums = @playlist_albums.joins(:album).order('albums.title')
+      @playlist_albums = @playlist_albums.joins(:album).order('albums.title, position asc')
     when 'artist'
-      @playlist_albums = @playlist_albums.joins(:album => [:artist]).order('artists.name')
+      @playlist_albums = @playlist_albums.joins(:album => [:artist]).order('artists.name asc, position asc')
     else
       @playlist_albums = @playlist_albums.order(:position)
     end
