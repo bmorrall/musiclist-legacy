@@ -8,7 +8,7 @@ class PlaylistsController < InheritedResources::Base
     when 'artist'
       @playlist_albums = @playlist_albums.joins(:album => [:artist]).order('artists.name')
     else
-      @playlist_albums = @playlist_albums.order('`playlist_albums`.`order`')
+      @playlist_albums = @playlist_albums.order(:position)
     end
   end
 end
