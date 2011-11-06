@@ -1,6 +1,6 @@
 class Album < ActiveRecord::Base
   belongs_to :artist
-  has_many :playlist_albums
+  has_many :playlist_albums, :dependent => :destroy
   has_many :playlists, :through => :playlist_albums
 
   validates_presence_of :title

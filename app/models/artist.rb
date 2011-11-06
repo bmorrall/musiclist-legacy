@@ -1,5 +1,5 @@
 class Artist < ActiveRecord::Base
-  has_many :albums
+  has_many :albums, :dependent => :nullify
   validates_presence_of :name
 
   def display_name
