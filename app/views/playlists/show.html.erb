@@ -7,7 +7,7 @@
 
 <% unless @playlist_albums.empty? %>
 <h2>Albums</h2>
-<table>
+<table class="condensed-table zebra-striped">
   <thead>
     <tr>
       <th>#</th>
@@ -18,7 +18,7 @@
   <tbody>
 <% @playlist_albums.each do |a| %>
     <tr>
-      <td class="number"><%= a.order %></td>
+      <td class="number"><%= a.position %></td>
       <td><%= a.album.title %></td>
       <td><%= a.album.artist.display_name %></td>
     </tr>

@@ -2,16 +2,19 @@
 <html>
 <head>
   <title><% if @content_for_title.blank? %>Musiclist<% else %><%= @content_for_title %><% end %></title>
+  <%= stylesheet_link_tag 'http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css'%>
   <%= stylesheet_link_tag    "application" %>
   <%= yield(:head) %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+<div class="container">
 <%- flash.each do |name, msg| -%><%= content_tag :div, msg, :id => "flash_#{name}" %><%- end -%>
 
 <% if show_title? -%><h1><%= @content_for_title -%></h1><% end -%>
 <%= yield %>
+</div>
 
 <%= jquery_cdn %>
 <%= javascript_include_tag "application" %>
