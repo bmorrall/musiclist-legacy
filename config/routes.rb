@@ -1,4 +1,6 @@
 Musiclist::Application.routes.draw do
+  resources :album_statuses
+
   namespace :admin do
     resource :rs_imports, :only => [:show, :create]
   end
