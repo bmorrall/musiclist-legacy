@@ -10,9 +10,13 @@
   </thead>
   <tbody>
 <% @playlist_albums.each do |a| %>
-    <tr>
+    <tr data-album="<%= a.id %>">
       <td class="number"><%= a.position %></td>
-      <td colspan="2"><span class="artist"><%= a.album.artist.display_name %></span> - <%= a.album.title %></td>
+      <td><span class="artist"><%= a.album.artist.display_name %></span> - <%= a.album.title %></td>
+      <td>
+        <a class="played"><span class="label">Played</span></a>
+        <a class="purchased"><span class="label">Purchased</span></a>
+      </td>
     </tr>
 <% end %>
   </tbody>
@@ -21,3 +25,45 @@
 
 <%= link_to 'Edit', edit_playlist_path(@playlist) %> |
 <%= link_to 'Back', playlists_path %>
+
+<% content_for :scripts do %>
+<script type="text/javascript">
+//<!--
+$(function() {
+  $('a.played').click(function() {
+    $(this).find('span.label').toggleClass('warning');
+    var played = $(this).find('span.label').hasClass('warning');
+    var album_id = $(this).parent('td').parent('tr').attr('data-album');
+    $.ajax({
+      type: 'post',
+      data: {
+        album_status: {
+          'album_id': album_id,
+          'played': played
+        }
+      },
+      complete: function(request){},
+      url: "<%= album_statuses_path(format: :js) %>"
+    })
+  });
+  $('a.purchased').click(function() {
+    $(this).find('span.label').toggleClass('success');
+    var purchased = $(this).find('span.label').hasClass('success');
+    var album_id = $(this).parent('td').parent('tr').attr('data-album');
+    $.ajax({
+      type: 'post',
+      data: {
+        album_status: {
+          'album_id': album_id,
+          'purchased': purchased
+        }
+      },
+      complete: function(request){},
+      url: "<%= album_statuses_path(format: :js) %>"
+    })
+  });
+  $.getScript('<%= album_statuses_path() %>')
+});
+//-->
+</script>
+<% end %>

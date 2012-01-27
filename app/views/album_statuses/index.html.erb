@@ -1,0 +1,27 @@
+<h1>Listing album_statuses</h1>
+
+<table>
+  <tr>
+    <th>Album</th>
+    <th>Played</th>
+    <th>Purchased</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @album_statuses.each do |album_status| %>
+  <tr>
+    <td><%= album_status.album_id %></td>
+    <td><%= album_status.played %></td>
+    <td><%= album_status.purchased %></td>
+    <td><%= link_to 'Show', album_status %></td>
+    <td><%= link_to 'Edit', edit_album_status_path(album_status) %></td>
+    <td><%= link_to 'Destroy', album_status, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Album status', new_album_status_path %>
