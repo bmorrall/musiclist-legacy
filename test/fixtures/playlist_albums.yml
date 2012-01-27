@@ -1,0 +1,41 @@
+greatest-1:
+  album: sgt-peppers
+  playlist: greatest-500
+  position: 1
+greatest-2:
+  album: pet-sounds
+  playlist: greatest-500
+  position: 2
+greatest-3:
+  album: revolver
+  playlist: greatest-500
+  position: 3
+greatest-4:
+  album: highway-61
+  playlist: greatest-500
+  position: 4
+greatest-5:
+  album: rubber-soul
+  playlist: greatest-500
+  position: 5
+greatest-6:
+  album: whats-going-on
+  playlist: greatest-500
+  position: 6
+greatest-7:
+  album: exile-on-main-st
+  playlist: greatest-500
+  position: 7
+greatest-8:
+  album: london-calling
+  playlist: greatest-500
+  position: 8
+greatest-9:
+  album: blond-on-blond
+  playlist: greatest-500
+  position: 9
+greatest-10:
+  album: white-album
+  playlist: greatest-500
+  position: 10
+    

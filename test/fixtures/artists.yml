@@ -1,0 +1,12 @@
+beatles:
+  name: 'Beatles, The'
+beach-boys:
+  name: 'Beach Boys, The'
+bob-dylan:
+  name: 'Dylan, Bob'
+marvin-gaye:
+  name: 'Gaye, Marvin'
+rolling-stones:
+  name: 'Rolling Stones'
+clash:
+  name: 'Clash, The'
