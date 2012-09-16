@@ -2,6 +2,8 @@ class PlaylistsController < InheritedResources::Base
   def show
     @playlist = Playlist.find(params[:id])
     @playlist_albums = @playlist.playlist_albums.includes(:album => [:artist])
+    @album_statuses = AlbumStatus.scoped
+
     case params[:order]
     when 'album'
       @playlist_albums = @playlist_albums.joins(:album).order('albums.title, position asc')
