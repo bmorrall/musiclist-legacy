@@ -1,4 +1,6 @@
 class AlbumStatusesController < InheritedResources::Base# GET /albums
+  before_filter :authenticate
+
   # GET /albums.json
   def index
     @album_statuses = AlbumStatus.all
@@ -13,8 +15,6 @@ class AlbumStatusesController < InheritedResources::Base# GET /albums
   # POST /albums
    # POST /albums.json
    def create
-     
-     
      @album_status = AlbumStatus.find_or_create_by_album_id(params[:album_status][:album_id])
      @album_status.attributes = params[:album_status]
 
@@ -30,6 +30,14 @@ class AlbumStatusesController < InheritedResources::Base# GET /albums
          format.json { render json: @album_status.errors, status: :unprocessable_entity }
          format.js   { render json: @album_status.errors, status: :unprocessable_entity }
        end
+     end
+   end
+
+   protected
+
+   def authenticate
+     authenticate_or_request_with_http_basic do |username, password|
+       username == "foo" && password == "bar"
      end
    end
 end
