@@ -1,5 +1,15 @@
 <% title @playlist.name, false %>
 <%= content_tag :h2, @playlist.name %>
+
+<dl class="dl-horizontal">
+  <dt>Albums:</dt>
+  <dd><%= @playlist_albums.count %></dd>
+  <dt>Played:</dt>
+  <dd><%= AlbumStatus.played.count %></dd>
+  <dt>Purchased:</dt>
+  <dd><%= AlbumStatus.purchased.count %></dd>
+</dl>
+
 <% unless @playlist_albums.empty? %>
 <table class="condensed-table zebra-striped">
   <thead>

@@ -2,15 +2,6 @@
 <%= meta_description 'A List of Albums that Ben wishes to own' %>
 <%= meta_keywords 'albums', 'CDs', 'wishlist' %>
 
-<dl class="dl-horizontal">
-  <dt>Albums:</dt>
-  <dd><%= @albums.count %></dd>
-  <dt>Played:</dt>
-  <dd><%= AlbumStatus.played.count %></dd>
-  <dt>Purchased:</dt>
-  <dd><%= AlbumStatus.purchased.count %></dd>
-</dl>
-
 <table>
   <thead>
   <tr>
