@@ -6,3 +6,5 @@ tmp/
 .rspec
 .rvmrc
 .DS_Store
+
+/public/assets
