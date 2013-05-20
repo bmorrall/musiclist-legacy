@@ -54,7 +54,7 @@ $(function() {
         }
       },
       complete: function(request){},
-      url: "<%= album_statuses_path(format: :js) %>"
+      url: "<%= album_statuses_path(format: :json) %>"
     })
   });
   $('a.purchased').click(function() {
