@@ -1,5 +1,7 @@
 Musiclist::Application.routes.draw do
 
+  devise_for :users
+
   namespace :admin do
     resource :rs_imports, :only => [:show, :create]
   end
