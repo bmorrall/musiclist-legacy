@@ -17,6 +17,8 @@ group :assets do
   gem 'bootstrap-sass'
 end
 
+gem 'devise'
+
 gem 'jquery-rails'
 
 gem 'formtastic'
