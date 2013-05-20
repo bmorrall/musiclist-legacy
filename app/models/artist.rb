@@ -6,6 +6,9 @@ class Artist < ActiveRecord::Base
   attr_accessible :name
   validates_presence_of :name
 
+  # sort_name:string
+  attr_accessible :sort_name
+
   def display_name
     display_name = name.split('&').map{ |n| n.split(',', 2).reverse.join(' ') }.join(' & ')
     display_name.squeeze(' ').strip
