@@ -1,4 +1,5 @@
 class ArtistsController < ApplicationController
+  before_filter :authenticate_user!
   load_resource :artist
   authorize_resource :artist
 
