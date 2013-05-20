@@ -8,6 +8,10 @@
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @artist.name %></dd>
   <% end %>
+  <% unless @artist.sort_name.blank? %>
+  <dt><strong><%= model_class.human_attribute_name(:sort_name) %>:</strong></dt>
+  <dd><%= @artist.sort_name %></dd>
+  <% end %>
 </dl>
 
 <h2>Albums</h2>
