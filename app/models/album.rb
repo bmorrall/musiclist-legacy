@@ -10,4 +10,9 @@ class Album < ActiveRecord::Base
   belongs_to :artist
   attr_accessible :artist_id
   validates_presence_of :artist_id
+
+  def to_s
+    "#{artist.name}: #{title}"
+  end
+
 end
