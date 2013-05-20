@@ -1,43 +1,32 @@
 class AlbumStatusesController < ApplicationController
-  before_filter :authenticate
+  load_resource :album_status
+  authorize_resource :album_status
 
-  # GET /albums.json
-  def index
-    @album_statuses = AlbumStatus.all
+  def create
+    authorize! :create, AlbumStatus
+
+    @album_status = AlbumStatus.find_or_create_by_album_id(params[:album_status][:album_id])
+    @album_status.attributes = params[:album_status]
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.js
-      format.json { render json: @albums }
+      if @album_status.save
+        format.html { redirect_to @album_status, notice: 'Album was successfully created.' }
+        format.json { render json: @album_status, status: :created, location: @album }
+      else
+        format.html { redirect_to root_url, alert: 'Unable to update Album Status' }
+        format.json { render json: @album_status.errors, status: :unprocessable_entity }
+      end
     end
   end
-  
-  # POST /albums
-   # POST /albums.json
-   def create
-     @album_status = AlbumStatus.find_or_create_by_album_id(params[:album_status][:album_id])
-     @album_status.attributes = params[:album_status]
 
-     puts @album_status.attributes
+  protected
 
-     respond_to do |format|
-       if @album_status.save
-         format.html { redirect_to @album_status, notice: 'Album was successfully created.' }
-         format.json { render json: @album_status, status: :created, location: @album }
-         format.js   { render :action => :show }
-       else
-         format.html { render action: "new" }
-         format.json { render json: @album_status.errors, status: :unprocessable_entity }
-         format.js   { render json: @album_status.errors, status: :unprocessable_entity }
-       end
-     end
-   end
+  # Capture any access violations, ensure User isn't unnessisarily redirected to root
+  rescue_from CanCan::AccessDenied do |exception|
+    respond_to do |format|
+      format.html { throw exception }
+      format.json { head :no_content, :status => :forbidden }
+    end
+  end
 
-   protected
-
-   def authenticate
-     authenticate_or_request_with_http_basic do |username, password|
-       username == "foo" && password == "bar"
-     end
-   end
 end

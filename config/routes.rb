@@ -6,7 +6,7 @@ Musiclist::Application.routes.draw do
     resource :rs_imports, :only => [:show, :create]
   end
 
-  resources :album_statuses
+  resources :album_statuses, :only => [:create]
 
   resources :albums
 

@@ -21,136 +21,78 @@ require 'spec_helper'
 describe AlbumStatusesController do
 
   # This should return the minimal set of attributes required to create a valid
-  # AlbumStatus. As you add validations to AlbumStatus, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
+  # AlbumStatus.
+  def valid_create_attributes
+    attributes = FactoryGirl.attributes_for(:album_status)
+    attributes[:album_id] = FactoryGirl.create(:album).id
+    attributes
   end
 
-  describe "GET index" do
-    it "assigns all album_statuses as @album_statuses" do
-      album_status = AlbumStatus.create! valid_attributes
-      get :index
-      assigns(:album_statuses).should eq([album_status])
-    end
-  end
+  describe "POST create as JSON" do
+    context  do # Within default nesting
 
-  describe "GET show" do
-    it "assigns the requested album_status as @album_status" do
-      album_status = AlbumStatus.create! valid_attributes
-      get :show, :id => album_status.id.to_s
-      assigns(:album_status).should eq(album_status)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new album_status as @album_status" do
-      get :new
-      assigns(:album_status).should be_a_new(AlbumStatus)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested album_status as @album_status" do
-      album_status = AlbumStatus.create! valid_attributes
-      get :edit, :id => album_status.id.to_s
-      assigns(:album_status).should eq(album_status)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new AlbumStatus" do
-        expect {
-          post :create, :album_status => valid_attributes
-        }.to change(AlbumStatus, :count).by(1)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:album_status => valid_create_attributes, :format => :json}
+          end
+          it { should respond_with(:unauthorized) }
+          it { response.content_type.to_s.should match(/json/) }
+          it { should_not render_template(:show) }
+          it { should_not render_with_layout }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "assigns a newly created album_status as @album_status" do
-        post :create, :album_status => valid_attributes
-        assigns(:album_status).should be_a(AlbumStatus)
-        assigns(:album_status).should be_persisted
+        describe "with a valid request" do
+          before(:each) do
+            post :create, {:album_status => valid_create_attributes, :format => :json}
+          end
+          it { should respond_with(:forbidden) }
+          it { response.content_type.to_s.should match(/json/) }
+          it { should_not render_template(:show) }
+          it { should_not render_with_layout }
+        end
       end
+      context 'as user with create ability' do
+        login_user_with_ability :create, AlbumStatus
 
-      it "redirects to the created album_status" do
-        post :create, :album_status => valid_attributes
-        response.should redirect_to(AlbumStatus.last)
+        describe "with valid params" do
+          it "creates a new AlbumStatus" do
+            expect {
+              post :create, {:album_status => valid_create_attributes, :format => :json}
+            }.to change(AlbumStatus, :count).by(1)
+          end
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:album_status => valid_create_attributes, :format => :json}
+          end
+          it "assigns a newly created album_status as @album_status" do
+            assigns(:album_status).should be_a(AlbumStatus)
+            assigns(:album_status).should be_persisted
+          end
+          it { should respond_with(:created) }
+          it { response.content_type.to_s.should match(/json/) }
+          it { should_not render_template(:show) }
+          it { should_not render_with_layout }
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            # Trigger the behavior that occurs when invalid params are submitted
+            AlbumStatus.any_instance.stub(:save).and_return(false)
+            post :create, {:album_status => { "played" => "invalid value" }, :format => :json}
+          end
+          it { should respond_with(:unprocessable_entity) }
+          it { response.content_type.to_s.should match(/json/) }
+          it { should_not render_template(:show) }
+          it { should_not render_with_layout }
+          it "assigns a newly created but unsaved album_status as @album_statu" do
+            assigns(:album_status).should be_a_new(AlbumStatus)
+          end
+        end
       end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved album_status as @album_status" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        AlbumStatus.any_instance.stub(:save).and_return(false)
-        post :create, :album_status => {}
-        assigns(:album_status).should be_a_new(AlbumStatus)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        AlbumStatus.any_instance.stub(:save).and_return(false)
-        post :create, :album_status => {}
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested album_status" do
-        album_status = AlbumStatus.create! valid_attributes
-        # Assuming there are no other album_statuses in the database, this
-        # specifies that the AlbumStatus created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        AlbumStatus.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => album_status.id, :album_status => {'these' => 'params'}
-      end
-
-      it "assigns the requested album_status as @album_status" do
-        album_status = AlbumStatus.create! valid_attributes
-        put :update, :id => album_status.id, :album_status => valid_attributes
-        assigns(:album_status).should eq(album_status)
-      end
-
-      it "redirects to the album_status" do
-        album_status = AlbumStatus.create! valid_attributes
-        put :update, :id => album_status.id, :album_status => valid_attributes
-        response.should redirect_to(album_status)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the album_status as @album_status" do
-        album_status = AlbumStatus.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        AlbumStatus.any_instance.stub(:save).and_return(false)
-        put :update, :id => album_status.id.to_s, :album_status => {}
-        assigns(:album_status).should eq(album_status)
-      end
-
-      it "re-renders the 'edit' template" do
-        album_status = AlbumStatus.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        AlbumStatus.any_instance.stub(:save).and_return(false)
-        put :update, :id => album_status.id.to_s, :album_status => {}
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested album_status" do
-      album_status = AlbumStatus.create! valid_attributes
-      expect {
-        delete :destroy, :id => album_status.id.to_s
-      }.to change(AlbumStatus, :count).by(-1)
-    end
-
-    it "redirects to the album_statuses list" do
-      album_status = AlbumStatus.create! valid_attributes
-      delete :destroy, :id => album_status.id.to_s
-      response.should redirect_to(album_statuses_url)
     end
   end
 
