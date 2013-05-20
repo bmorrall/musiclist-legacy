@@ -37,6 +37,7 @@ gem 'formtastic'
 gem "rspec-rails", :group => [:test, :development]  
 group :test do  
   gem "factory_girl_rails"  
+  gem 'faker'
   gem "guard-rspec"  
 end  
 
