@@ -1,10 +1,17 @@
 class AlbumStatus < ActiveRecord::Base
-  belongs_to :album
   scope :played, where(:played => true)
   scope :purchased, where(:purchased => true)
 
-  attr_accessible :album_id, :played, :purchased
-
+  # album:references
+  belongs_to :album
+  attr_accessible :album_id
   validates_presence_of :album_id
   validates_uniqueness_of :album_id
+
+  # played:boolean
+  attr_accessible  :played
+
+  # purchased:boolean
+  attr_accessible  :purchased
+
 end
