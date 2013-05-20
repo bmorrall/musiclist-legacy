@@ -21,136 +21,319 @@ require 'spec_helper'
 describe PlaylistsController do
 
   # This should return the minimal set of attributes required to create a valid
-  # Playlist. As you add validations to Playlist, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
+  # Playlist.
+  def valid_create_attributes
+    FactoryGirl.attributes_for(:playlist)
+  end
+
+  # This should return the minimal set of attributes required to update a valid
+  # Playlist.
+  def valid_update_attributes
+    FactoryGirl.attributes_for(:playlist)
   end
 
   describe "GET index" do
-    it "assigns all playlists as @playlists" do
-      playlist = Playlist.create! valid_attributes
-      get :index
-      assigns(:playlists).should eq([playlist])
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            get :index, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:index) }
+          it { should render_with_layout(:application) }
+          it "assigns all playlists as @playlists" do
+            assigns(:playlists).should eq([@test_playlist])
+          end
+        end
+      end
     end
   end
 
   describe "GET show" do
-    it "assigns the requested playlist as @playlist" do
-      playlist = Playlist.create! valid_attributes
-      get :show, :id => playlist.id.to_s
-      assigns(:playlist).should eq(playlist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            get :show, {:id => @test_playlist.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:show) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested playlist as @playlist" do
+            assigns(:playlist).should eq(@test_playlist)
+          end
+        end
+      end
     end
   end
 
   describe "GET new" do
-    it "assigns a new playlist as @playlist" do
-      get :new
-      assigns(:playlist).should be_a_new(Playlist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(playlists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Playlist
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a new playlist as @playlist" do
+            assigns(:playlist).should be_a_new(Playlist)
+          end
+        end
+      end
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested playlist as @playlist" do
-      playlist = Playlist.create! valid_attributes
-      get :edit, :id => playlist.id.to_s
-      assigns(:playlist).should eq(playlist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            get :edit, {:id => @test_playlist.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            get :edit, {:id => @test_playlist.to_param}
+          end
+          it { should redirect_to(playlists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Playlist
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            get :edit, {:id => @test_playlist.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested playlist as @playlist" do
+            assigns(:playlist).should eq(@test_playlist)
+          end
+        end
+      end
     end
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Playlist" do
-        expect {
-          post :create, :playlist => valid_attributes
-        }.to change(Playlist, :count).by(1)
-      end
+    context  do # Within default nesting
 
-      it "assigns a newly created playlist as @playlist" do
-        post :create, :playlist => valid_attributes
-        assigns(:playlist).should be_a(Playlist)
-        assigns(:playlist).should be_persisted
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:playlist => valid_create_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the created playlist" do
-        post :create, :playlist => valid_attributes
-        response.should redirect_to(Playlist.last)
+        describe "with a valid request" do
+          before(:each) do
+            post :create, {:playlist => valid_create_attributes}
+          end
+          it { should redirect_to(playlists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Playlist
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved playlist as @playlist" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Playlist.any_instance.stub(:save).and_return(false)
-        post :create, :playlist => {}
-        assigns(:playlist).should be_a_new(Playlist)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Playlist.any_instance.stub(:save).and_return(false)
-        post :create, :playlist => {}
-        response.should render_template("new")
+        describe "with valid params" do
+          it "creates a new Playlist" do
+            expect {
+              post :create, {:playlist => valid_create_attributes}
+            }.to change(Playlist, :count).by(1)
+          end
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:playlist => valid_create_attributes}
+          end
+          it "assigns a newly created playlist as @playlist" do
+            assigns(:playlist).should be_a(Playlist)
+            assigns(:playlist).should be_persisted
+          end
+          it { should set_the_flash[:notice].to('Playlist was successfully created.') }
+          it "redirects to the created playlist" do
+            response.should redirect_to(playlist_path(Playlist.last))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            # Trigger the behavior that occurs when invalid params are submitted
+            Playlist.any_instance.stub(:save).and_return(false)
+            post :create, {:playlist => { "name" => "invalid value" }}
+          end
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a newly created but unsaved playlist as @playlist" do
+            assigns(:playlist).should be_a_new(Playlist)
+          end
+        end
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested playlist" do
-        playlist = Playlist.create! valid_attributes
-        # Assuming there are no other playlists in the database, this
-        # specifies that the Playlist created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Playlist.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => playlist.id, :playlist => {'these' => 'params'}
-      end
+    context  do # Within default nesting
 
-      it "assigns the requested playlist as @playlist" do
-        playlist = Playlist.create! valid_attributes
-        put :update, :id => playlist.id, :playlist => valid_attributes
-        assigns(:playlist).should eq(playlist)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            put :update, {:id => @test_playlist.to_param, :playlist => valid_update_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the playlist" do
-        playlist = Playlist.create! valid_attributes
-        put :update, :id => playlist.id, :playlist => valid_attributes
-        response.should redirect_to(playlist)
+        describe "with a valid request" do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            put :update, {:id => @test_playlist.to_param, :playlist => valid_update_attributes}
+          end
+          it { should redirect_to(playlists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Playlist
 
-    describe "with invalid params" do
-      it "assigns the playlist as @playlist" do
-        playlist = Playlist.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Playlist.any_instance.stub(:save).and_return(false)
-        put :update, :id => playlist.id.to_s, :playlist => {}
-        assigns(:playlist).should eq(playlist)
-      end
-
-      it "re-renders the 'edit' template" do
-        playlist = Playlist.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Playlist.any_instance.stub(:save).and_return(false)
-        put :update, :id => playlist.id.to_s, :playlist => {}
-        response.should render_template("edit")
+        describe "with valid params" do
+          it "updates the requested playlist" do
+            @test_playlist = FactoryGirl.create(:playlist)
+            # Assuming there are no other playlist in the database, this
+            # specifies that the Playlist created on the previous line
+            # receives the :update_attributes message with whatever params are
+            # submitted in the request.
+            Playlist.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+            put :update, {:id => @test_playlist.to_param, :playlist => { "name" => "MyString" }}
+          end
+        end
+        describe "with a valid request" do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            put :update, {:id => @test_playlist.to_param, :playlist => valid_update_attributes}
+          end
+          it "assigns the requested playlist as @playlist" do
+            assigns(:playlist).should eq(@test_playlist)
+          end
+          it { should set_the_flash[:notice].to('Playlist was successfully updated.') }
+          it "redirects to the playlist" do
+            @test_playlist.reload # URL Params change
+            response.should redirect_to(playlist_path(@test_playlist))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            # Trigger the behavior that occurs when invalid params are submitted
+            Playlist.any_instance.stub(:save).and_return(false)
+            put :update, {:id => @test_playlist.to_param, :playlist => { "name" => "invalid value" }}
+          end
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the playlist as @playlist" do
+            assigns(:playlist).should eq(@test_playlist)
+          end
+        end
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested playlist" do
-      playlist = Playlist.create! valid_attributes
-      expect {
-        delete :destroy, :id => playlist.id.to_s
-      }.to change(Playlist, :count).by(-1)
-    end
+    context  do # Within default nesting
 
-    it "redirects to the playlists list" do
-      playlist = Playlist.create! valid_attributes
-      delete :destroy, :id => playlist.id.to_s
-      response.should redirect_to(playlists_url)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            delete :destroy, {:id => @test_playlist.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe "with a valid request" do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            delete :destroy, {:id => @test_playlist.to_param}
+          end
+          it { should redirect_to(playlists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with destroy ability' do
+        login_user_with_ability :destroy, Playlist
+
+        it "destroys the requested playlist" do
+          @test_playlist = FactoryGirl.create(:playlist)
+          expect {
+            delete :destroy, {:id => @test_playlist.to_param}
+          }.to change(Playlist, :count).by(-1)
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            @test_playlist = FactoryGirl.create(:playlist)
+            delete :destroy, {:id => @test_playlist.to_param}
+          end
+          it { should set_the_flash[:notice].to('Playlist was successfully deleted.') }
+          it "redirects to the playlist list" do
+            response.should redirect_to(playlists_url)
+          end
+        end
+      end
     end
   end
 
