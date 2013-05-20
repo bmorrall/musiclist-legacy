@@ -23,7 +23,7 @@ gem 'cancan'
 
 gem 'jquery-rails'
 
-gem 'formtastic'
+gem 'simple_form'
 
 # Use unicorn as the web server
 # gem 'unicorn'
