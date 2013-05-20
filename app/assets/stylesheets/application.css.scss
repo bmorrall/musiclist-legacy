@@ -9,6 +9,8 @@
  *= require scaffolds
 */
 
+@import 'bootstrap';
+
 #flash_notice, #flash_error {
   padding: 5px 8px;
   margin: 10px 0;
@@ -39,6 +41,8 @@ px      68    160    252    344    436    528    620    712    804    896    */
 .container {
   
 }
+
+@import 'bootstrap-responsive';
 
 /*    Tablet Layout: 768px.
     Gutters: 24px.

@@ -13,16 +13,16 @@ gem 'pg'
 group :assets do
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
+
+  gem 'sass-rails'
+  gem 'bootstrap-sass'
 end
-# http://www.davidlowry.co.uk/400/activeadmin-on-heroku-rails-3-1/
-gem 'sass-rails', "  ~> 3.1.0"
 
 gem 'jquery-rails'
 
 gem 'formtastic'
 
 # Use ActiveAdmin for Admin tasks
-gem 'activeadmin'
 gem "meta_search",    '>= 1.1.0.pre'
 
 # Use unicorn as the web server
