@@ -1,17 +1,16 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-#gem 'sqlite3'
 gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'coffee-rails', "~> 3.1.0"
+  gem 'coffee-rails'
   gem 'uglifier'
 
   gem 'sass-rails'
@@ -21,9 +20,6 @@ end
 gem 'jquery-rails'
 
 gem 'formtastic'
-
-# Use ActiveAdmin for Admin tasks
-gem "meta_search",    '>= 1.1.0.pre'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -37,7 +33,6 @@ gem "meta_search",    '>= 1.1.0.pre'
 gem "rspec-rails", :group => [:test, :development]  
 group :test do  
   gem "factory_girl_rails"  
-  gem "capybara"  
   gem "guard-rspec"  
 end  
 
