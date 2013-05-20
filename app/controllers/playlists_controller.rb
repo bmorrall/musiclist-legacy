@@ -1,4 +1,4 @@
-class PlaylistsController < InheritedResources::Base
+class PlaylistsController < ApplicationController
   def show
     @playlist = Playlist.find(params[:id])
     @playlist_albums = @playlist.playlist_albums.includes(:album => [:artist])

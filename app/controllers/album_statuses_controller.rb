@@ -1,4 +1,4 @@
-class AlbumStatusesController < InheritedResources::Base# GET /albums
+class AlbumStatusesController < ApplicationController
   before_filter :authenticate
 
   # GET /albums.json
