@@ -1,18 +1,34 @@
 require 'spec_helper'
 
-describe "artists/edit.html.erb" do
-  before(:each) do
-    @artist = assign(:artist, stub_model(Artist,
-      :name => "MyString"
-    ))
+describe "artists/edit" do
+
+  let(:test_artist) do
+    FactoryGirl.build_stubbed(:artist,
+      :name => "Name"
+    )
   end
 
-  it "renders the edit artist form" do
-    render
+  before(:each) do
+    # Stub ability for testing
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub(:current_ability) { @ability }
+  end
 
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form", :action => artists_path(@artist), :method => "post" do
-      assert_select "input#artist_name", :name => "artist[name]"
+  context do # Within default nesting
+    before(:each) do
+      # Add Properties for view scope
+      assign(:artist, test_artist)
     end
+
+    it "renders the edit artist form" do
+      render
+
+      # Run the generator again with the --webrat flag if you want to use webrat matchers
+      assert_select "form[action=?][method=?]", artist_path(test_artist), "post" do
+        assert_select "input#artist_name[name=?]", "artist[name]"
+      end
+    end
+
   end
 end

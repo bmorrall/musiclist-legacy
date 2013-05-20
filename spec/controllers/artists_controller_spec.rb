@@ -21,136 +21,366 @@ require 'spec_helper'
 describe ArtistsController do
 
   # This should return the minimal set of attributes required to create a valid
-  # Artist. As you add validations to Artist, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
+  # Artist.
+  def valid_create_attributes
+    FactoryGirl.attributes_for(:artist)
+  end
+
+  # This should return the minimal set of attributes required to update a valid
+  # Artist.
+  def valid_update_attributes
+    FactoryGirl.attributes_for(:artist)
   end
 
   describe "GET index" do
-    it "assigns all artists as @artists" do
-      artist = Artist.create! valid_attributes
-      get :index
-      assigns(:artists).should eq([artist])
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :index, {}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :index, {}
+          end
+          it { should redirect_to(root_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with read ability' do
+        login_user_with_ability :read, Artist
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :index, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:index) }
+          it { should render_with_layout(:application) }
+          it "assigns all artists as @artists" do
+            assigns(:artists).should eq([@test_artist])
+          end
+        end
+      end
     end
   end
 
   describe "GET show" do
-    it "assigns the requested artist as @artist" do
-      artist = Artist.create! valid_attributes
-      get :show, :id => artist.id.to_s
-      assigns(:artist).should eq(artist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :show, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :show, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with read ability' do
+        login_user_with_ability :read, Artist
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :show, {:id => @test_artist.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:show) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested artist as @artist" do
+            assigns(:artist).should eq(@test_artist)
+          end
+        end
+      end
     end
   end
 
   describe "GET new" do
-    it "assigns a new artist as @artist" do
-      get :new
-      assigns(:artist).should be_a_new(Artist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Artist
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a new artist as @artist" do
+            assigns(:artist).should be_a_new(Artist)
+          end
+        end
+      end
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested artist as @artist" do
-      artist = Artist.create! valid_attributes
-      get :edit, :id => artist.id.to_s
-      assigns(:artist).should eq(artist)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :edit, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :edit, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Artist
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            get :edit, {:id => @test_artist.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested artist as @artist" do
+            assigns(:artist).should eq(@test_artist)
+          end
+        end
+      end
     end
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Artist" do
-        expect {
-          post :create, :artist => valid_attributes
-        }.to change(Artist, :count).by(1)
-      end
+    context  do # Within default nesting
 
-      it "assigns a newly created artist as @artist" do
-        post :create, :artist => valid_attributes
-        assigns(:artist).should be_a(Artist)
-        assigns(:artist).should be_persisted
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:artist => valid_create_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the created artist" do
-        post :create, :artist => valid_attributes
-        response.should redirect_to(Artist.last)
+        describe "with a valid request" do
+          before(:each) do
+            post :create, {:artist => valid_create_attributes}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Artist
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved artist as @artist" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Artist.any_instance.stub(:save).and_return(false)
-        post :create, :artist => {}
-        assigns(:artist).should be_a_new(Artist)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Artist.any_instance.stub(:save).and_return(false)
-        post :create, :artist => {}
-        response.should render_template("new")
+        describe "with valid params" do
+          it "creates a new Artist" do
+            expect {
+              post :create, {:artist => valid_create_attributes}
+            }.to change(Artist, :count).by(1)
+          end
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:artist => valid_create_attributes}
+          end
+          it "assigns a newly created artist as @artist" do
+            assigns(:artist).should be_a(Artist)
+            assigns(:artist).should be_persisted
+          end
+          it { should set_the_flash[:notice].to('Artist was successfully created.') }
+          it "redirects to the created artist" do
+            response.should redirect_to(artist_path(Artist.last))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            # Trigger the behavior that occurs when invalid params are submitted
+            Artist.any_instance.stub(:save).and_return(false)
+            post :create, {:artist => { "name" => "invalid value" }}
+          end
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a newly created but unsaved artist as @artist" do
+            assigns(:artist).should be_a_new(Artist)
+          end
+        end
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested artist" do
-        artist = Artist.create! valid_attributes
-        # Assuming there are no other artists in the database, this
-        # specifies that the Artist created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Artist.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => artist.id, :artist => {'these' => 'params'}
-      end
+    context  do # Within default nesting
 
-      it "assigns the requested artist as @artist" do
-        artist = Artist.create! valid_attributes
-        put :update, :id => artist.id, :artist => valid_attributes
-        assigns(:artist).should eq(artist)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            put :update, {:id => @test_artist.to_param, :artist => valid_update_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the artist" do
-        artist = Artist.create! valid_attributes
-        put :update, :id => artist.id, :artist => valid_attributes
-        response.should redirect_to(artist)
+        describe "with a valid request" do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            put :update, {:id => @test_artist.to_param, :artist => valid_update_attributes}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Artist
 
-    describe "with invalid params" do
-      it "assigns the artist as @artist" do
-        artist = Artist.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Artist.any_instance.stub(:save).and_return(false)
-        put :update, :id => artist.id.to_s, :artist => {}
-        assigns(:artist).should eq(artist)
-      end
-
-      it "re-renders the 'edit' template" do
-        artist = Artist.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Artist.any_instance.stub(:save).and_return(false)
-        put :update, :id => artist.id.to_s, :artist => {}
-        response.should render_template("edit")
+        describe "with valid params" do
+          it "updates the requested artist" do
+            @test_artist = FactoryGirl.create(:artist)
+            # Assuming there are no other artist in the database, this
+            # specifies that the Artist created on the previous line
+            # receives the :update_attributes message with whatever params are
+            # submitted in the request.
+            Artist.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+            put :update, {:id => @test_artist.to_param, :artist => { "name" => "MyString" }}
+          end
+        end
+        describe "with a valid request" do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            put :update, {:id => @test_artist.to_param, :artist => valid_update_attributes}
+          end
+          it "assigns the requested artist as @artist" do
+            assigns(:artist).should eq(@test_artist)
+          end
+          it { should set_the_flash[:notice].to('Artist was successfully updated.') }
+          it "redirects to the artist" do
+            response.should redirect_to(artist_path(@test_artist))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            # Trigger the behavior that occurs when invalid params are submitted
+            Artist.any_instance.stub(:save).and_return(false)
+            put :update, {:id => @test_artist.to_param, :artist => { "name" => "invalid value" }}
+          end
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the artist as @artist" do
+            assigns(:artist).should eq(@test_artist)
+          end
+        end
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested artist" do
-      artist = Artist.create! valid_attributes
-      expect {
-        delete :destroy, :id => artist.id.to_s
-      }.to change(Artist, :count).by(-1)
-    end
+    context  do # Within default nesting
 
-    it "redirects to the artists list" do
-      artist = Artist.create! valid_attributes
-      delete :destroy, :id => artist.id.to_s
-      response.should redirect_to(artists_url)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            delete :destroy, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe "with a valid request" do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            delete :destroy, {:id => @test_artist.to_param}
+          end
+          it { should redirect_to(artists_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with destroy ability' do
+        login_user_with_ability :destroy, Artist
+
+        it "destroys the requested artist" do
+          @test_artist = FactoryGirl.create(:artist)
+          expect {
+            delete :destroy, {:id => @test_artist.to_param}
+          }.to change(Artist, :count).by(-1)
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            @test_artist = FactoryGirl.create(:artist)
+            delete :destroy, {:id => @test_artist.to_param}
+          end
+          it { should set_the_flash[:notice].to('Artist was successfully deleted.') }
+          it "redirects to the artist list" do
+            response.should redirect_to(artists_url)
+          end
+        end
+      end
     end
   end
 

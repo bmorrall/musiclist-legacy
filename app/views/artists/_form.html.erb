@@ -1,4 +1,15 @@
-<%= semantic_form_for @artist do |form| %>
-  <%= form.inputs %>
-  <%= form.buttons %>
+<%= simple_form_for(artist_form_values(@artist), :html => { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                @artist.persisted? ? artist_path(@artist) : artists_path,
+                :class => 'btn'
+    %>
+  </div>
 <% end %>

@@ -1,18 +1,19 @@
 Musiclist::Application.routes.draw do
-  resources :album_statuses
 
   namespace :admin do
     resource :rs_imports, :only => [:show, :create]
   end
 
-  resources :playlists
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+  resources :album_statuses
 
   resources :albums
 
   resources :artists
+
+  resources :playlists
+
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
