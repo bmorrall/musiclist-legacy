@@ -21,136 +21,368 @@ require 'spec_helper'
 describe AlbumsController do
 
   # This should return the minimal set of attributes required to create a valid
-  # Album. As you add validations to Album, be sure to
-  # update the return value of this method accordingly.
-  def valid_attributes
-    {}
+  # Album.
+  def valid_create_attributes
+    attributes = FactoryGirl.attributes_for(:album)
+    attributes[:artist_id] = FactoryGirl.create(:artist).id
+    attributes
+  end
+
+  # This should return the minimal set of attributes required to update a valid
+  # Album.
+  def valid_update_attributes
+    FactoryGirl.attributes_for(:album)
   end
 
   describe "GET index" do
-    it "assigns all albums as @albums" do
-      album = Album.create! valid_attributes
-      get :index
-      assigns(:albums).should eq([album])
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :index, {}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :index, {}
+          end
+          it { should redirect_to(root_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with read ability' do
+        login_user_with_ability :read, Album
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :index, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:index) }
+          it { should render_with_layout(:application) }
+          it "assigns all albums as @albums" do
+            assigns(:albums).should eq([@test_album])
+          end
+        end
+      end
     end
   end
 
   describe "GET show" do
-    it "assigns the requested album as @album" do
-      album = Album.create! valid_attributes
-      get :show, :id => album.id.to_s
-      assigns(:album).should eq(album)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :show, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :show, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with read ability' do
+        login_user_with_ability :read, Album
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :show, {:id => @test_album.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:show) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested album as @album" do
+            assigns(:album).should eq(@test_album)
+          end
+        end
+      end
     end
   end
 
   describe "GET new" do
-    it "assigns a new album as @album" do
-      get :new
-      assigns(:album).should be_a_new(Album)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Album
+
+        describe 'with a valid request' do
+          before(:each) do
+            get :new, {}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a new album as @album" do
+            assigns(:album).should be_a_new(Album)
+          end
+        end
+      end
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested album as @album" do
-      album = Album.create! valid_attributes
-      get :edit, :id => album.id.to_s
-      assigns(:album).should eq(album)
+    context  do # Within default nesting
+
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :edit, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :edit, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Album
+
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            get :edit, {:id => @test_album.to_param}
+          end
+          it { should respond_with(:success) }
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the requested album as @album" do
+            assigns(:album).should eq(@test_album)
+          end
+        end
+      end
     end
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Album" do
-        expect {
-          post :create, :album => valid_attributes
-        }.to change(Album, :count).by(1)
-      end
+    context  do # Within default nesting
 
-      it "assigns a newly created album as @album" do
-        post :create, :album => valid_attributes
-        assigns(:album).should be_a(Album)
-        assigns(:album).should be_persisted
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:album => valid_create_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the created album" do
-        post :create, :album => valid_attributes
-        response.should redirect_to(Album.last)
+        describe "with a valid request" do
+          before(:each) do
+            post :create, {:album => valid_create_attributes}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with create ability' do
+        login_user_with_ability :create, Album
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved album as @album" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Album.any_instance.stub(:save).and_return(false)
-        post :create, :album => {}
-        assigns(:album).should be_a_new(Album)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Album.any_instance.stub(:save).and_return(false)
-        post :create, :album => {}
-        response.should render_template("new")
+        describe "with valid params" do
+          it "creates a new Album" do
+            expect {
+              post :create, {:album => valid_create_attributes}
+            }.to change(Album, :count).by(1)
+          end
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            post :create, {:album => valid_create_attributes}
+          end
+          it "assigns a newly created album as @album" do
+            assigns(:album).should be_a(Album)
+            assigns(:album).should be_persisted
+          end
+          it { should set_the_flash[:notice].to('Album was successfully created.') }
+          it "redirects to the created album" do
+            response.should redirect_to(album_path(Album.last))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            # Trigger the behavior that occurs when invalid params are submitted
+            Album.any_instance.stub(:save).and_return(false)
+            post :create, {:album => { "title" => "invalid value" }}
+          end
+          it { should render_template(:new) }
+          it { should render_with_layout(:application) }
+          it "assigns a newly created but unsaved album as @album" do
+            assigns(:album).should be_a_new(Album)
+          end
+        end
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested album" do
-        album = Album.create! valid_attributes
-        # Assuming there are no other albums in the database, this
-        # specifies that the Album created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Album.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => album.id, :album => {'these' => 'params'}
-      end
+    context  do # Within default nesting
 
-      it "assigns the requested album as @album" do
-        album = Album.create! valid_attributes
-        put :update, :id => album.id, :album => valid_attributes
-        assigns(:album).should eq(album)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            put :update, {:id => @test_album.to_param, :album => valid_update_attributes}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
       end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
 
-      it "redirects to the album" do
-        album = Album.create! valid_attributes
-        put :update, :id => album.id, :album => valid_attributes
-        response.should redirect_to(album)
+        describe "with a valid request" do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            put :update, {:id => @test_album.to_param, :album => valid_update_attributes}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
       end
-    end
+      context 'as user with update ability' do
+        login_user_with_ability :update, Album
 
-    describe "with invalid params" do
-      it "assigns the album as @album" do
-        album = Album.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Album.any_instance.stub(:save).and_return(false)
-        put :update, :id => album.id.to_s, :album => {}
-        assigns(:album).should eq(album)
-      end
-
-      it "re-renders the 'edit' template" do
-        album = Album.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Album.any_instance.stub(:save).and_return(false)
-        put :update, :id => album.id.to_s, :album => {}
-        response.should render_template("edit")
+        describe "with valid params" do
+          it "updates the requested album" do
+            @test_album = FactoryGirl.create(:album)
+            # Assuming there are no other album in the database, this
+            # specifies that the Album created on the previous line
+            # receives the :update_attributes message with whatever params are
+            # submitted in the request.
+            Album.any_instance.should_receive(:update_attributes).with({ "title" => "MyString" })
+            put :update, {:id => @test_album.to_param, :album => { "title" => "MyString" }}
+          end
+        end
+        describe "with a valid request" do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            put :update, {:id => @test_album.to_param, :album => valid_update_attributes}
+          end
+          it "assigns the requested album as @album" do
+            assigns(:album).should eq(@test_album)
+          end
+          it { should set_the_flash[:notice].to('Album was successfully updated.') }
+          it "redirects to the album" do
+            response.should redirect_to(album_path(@test_album))
+          end
+        end
+        describe "with an invalid request" do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            # Trigger the behavior that occurs when invalid params are submitted
+            Album.any_instance.stub(:save).and_return(false)
+            put :update, {:id => @test_album.to_param, :album => { "title" => "invalid value" }}
+          end
+          it { should render_template(:edit) }
+          it { should render_with_layout(:application) }
+          it "assigns the album as @album" do
+            assigns(:album).should eq(@test_album)
+          end
+        end
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested album" do
-      album = Album.create! valid_attributes
-      expect {
-        delete :destroy, :id => album.id.to_s
-      }.to change(Album, :count).by(-1)
-    end
+    context  do # Within default nesting
 
-    it "redirects to the albums list" do
-      album = Album.create! valid_attributes
-      delete :destroy, :id => album.id.to_s
-      response.should redirect_to(albums_url)
+      context 'without a user session' do
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            delete :destroy, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(new_user_session_path) }
+          it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
+        end
+      end
+      context 'as an unauthorized user' do
+        login_unauthorized_user
+
+        describe "with a valid request" do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            delete :destroy, {:id => @test_album.to_param}
+          end
+          it { should redirect_to(albums_url) }
+          it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
+        end
+      end
+      context 'as user with destroy ability' do
+        login_user_with_ability :destroy, Album
+
+        it "destroys the requested album" do
+          @test_album = FactoryGirl.create(:album)
+          expect {
+            delete :destroy, {:id => @test_album.to_param}
+          }.to change(Album, :count).by(-1)
+        end
+        describe 'with a valid request' do
+          before(:each) do
+            @test_album = FactoryGirl.create(:album)
+            delete :destroy, {:id => @test_album.to_param}
+          end
+          it { should set_the_flash[:notice].to('Album was successfully deleted.') }
+          it "redirects to the album list" do
+            response.should redirect_to(albums_url)
+          end
+        end
+      end
     end
   end
 

@@ -1,7 +1,16 @@
-<%= semantic_form_for @album do |form| %>
-  <%= form.inputs do %>
-    <%= form.input :title %>
-    <%= form.input :artist %>
-  <% end %>
-  <%= form.buttons %>
+<%= simple_form_for(album_form_values(@album), :html => { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :title %>
+    <%= f.association :artist %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                @album.persisted? ? album_path(@album) : albums_path,
+                :class => 'btn'
+    %>
+  </div>
 <% end %>
