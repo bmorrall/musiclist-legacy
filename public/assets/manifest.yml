@@ -5,6 +5,8 @@ application.js: application-fb07214b3adc2576131c8221f120dbe4.js
 application/index.js: application-fb07214b3adc2576131c8221f120dbe4.js
 application.css: application-dba25b3f2cb29057572c7fc540f32490.css
 application/index.css: application-dba25b3f2cb29057572c7fc540f32490.css
+jquery.min.js: jquery.min-924451f91e1b8551b6f078ee754a0722.js
+jquery/index.min.js: jquery.min-924451f91e1b8551b6f078ee754a0722.js
 jquery.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 jquery/index.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 glyphicons-halflings-white.png: glyphicons-halflings-white-6cccd17a7aed91dbc0157d343c68c0d9.png
