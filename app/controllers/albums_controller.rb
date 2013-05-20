@@ -7,6 +7,7 @@ class AlbumsController < ApplicationController
   def index
     # @albums = Album.all
     # @albums = @albums.page(params[:page] || 1)
+    @albums = @albums.order(:title)
 
     respond_to do |format|
       format.html # index.html.erb
