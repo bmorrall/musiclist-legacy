@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Artist do
+
+  # name:string
+  it { should allow_mass_assignment_of(:name) }
+  it { should validate_presence_of(:name) }
+
   describe '#display_name' do
     it 'displays "Rolling Stones" as "Rolling Stones"' do
       artist = FactoryGirl.build(:artist, :name => 'Rolling Stones')
