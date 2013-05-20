@@ -66,8 +66,8 @@ describe "playlists/index" do
         context 'without update permissions' do
           it "renders a disabled link to edit_playlist_path" do
             render
-            assert_select "td>a[href=?][disabled=disabled]", edit_playlist_path(test_playlist_1), :count => 1
-            assert_select "td>a[href=?][disabled=disabled]", edit_playlist_path(test_playlist_2), :count => 1
+            assert_select "td>a[href=?]", edit_playlist_path(test_playlist_1), :count => 0
+            assert_select "td>a[href=?]", edit_playlist_path(test_playlist_2), :count => 0
           end
         end
         context 'with update permissions' do
@@ -84,12 +84,13 @@ describe "playlists/index" do
         context 'without destroy permissions' do
           it "renders a disabled link to playlist_path" do
             render
-            assert_select "td>a[href=?][data-method=delete][disabled=disabled]", playlist_path(test_playlist_1), :count => 1
-            assert_select "td>a[href=?][data-method=delete][disabled=disabled]", playlist_path(test_playlist_2), :count => 1
+            assert_select "td>a[href=?][data-method=delete]", playlist_path(test_playlist_1), :count => 0
+            assert_select "td>a[href=?][data-method=delete]", playlist_path(test_playlist_2), :count => 0
           end
         end
-        context 'with destroy permissions' do
+        context 'with destroy and update permissions' do
           it "renders a link to playlist_path" do
+            @ability.can :update, Playlist
             @ability.can :destroy, Playlist
             render
             assert_select "td>a[href=?][data-method=delete]:not([disabled])", playlist_path(test_playlist_1), :count => 1
