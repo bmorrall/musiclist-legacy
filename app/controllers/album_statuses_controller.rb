@@ -1,5 +1,4 @@
 class AlbumStatusesController < ApplicationController
-  load_resource :album_status
   authorize_resource :album_status
 
   def create
