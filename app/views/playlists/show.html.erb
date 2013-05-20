@@ -1,4 +1,9 @@
 <% title @playlist.name, false %>
+<% content_for(:head) do %>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="Musiclist">
+<% end %>
 <%= content_tag :h2, @playlist.name %>
 
 <dl class="dl-horizontal">
