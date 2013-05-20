@@ -1,4 +1,0 @@
-<% @album_statuses.each do |album_status| %>
-<% if album_status.played %>$('tr[data-album=<%= album_status.album_id %>] a.played span').addClass('warning');<% end %>
-<% if album_status.purchased %>$('tr[data-album=<%= album_status.album_id %>] a.purchased span').addClass('success');<% end %>
-<% end %>
