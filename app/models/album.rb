@@ -1,8 +1,13 @@
 class Album < ActiveRecord::Base
-  belongs_to :artist
   has_many :playlist_albums, :dependent => :destroy
   has_many :playlists, :through => :playlist_albums
 
+  # title:string
+  attr_accessible :title
   validates_presence_of :title
-  validates_presence_of :artist
+
+  # artist:references
+  belongs_to :artist
+  attr_accessible :artist_id
+  validates_presence_of :artist_id
 end
