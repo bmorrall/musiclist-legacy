@@ -24,7 +24,7 @@ class Admin::RsImportsController < ApplicationController
       @album = @admin_rs_import.create_album!
 
       respond_to do |format|
-        format.html { redirect_to admin_rs_imports_path, notice: "Album '#{@album.artist.display_name} - #{@album.title}' was successfully created." }
+        format.html { redirect_to admin_rs_imports_path, notice: "Album '#{@album.artist.name} - #{@album.title}' was successfully created." }
         format.json { render :json => @album, :status => :created, :location => @album }
       end
     else
