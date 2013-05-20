@@ -8,6 +8,15 @@ class Ability
     can :read, Artist
     can :read, Playlist
 
+    if user.persisted?
+      can :manage, Album
+      can :manage, Artist
+      cannot :destroy, Artist do |artist|
+        artist.albums.any?
+      end
+      can :create, Playlist
+    end
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
