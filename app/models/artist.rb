@@ -1,6 +1,6 @@
 class Artist < ActiveRecord::Base
   has_many :albums, :dependent => :nullify
-  default_scope :order => 'name asc'
+  default_scope :order => 'sort_name asc, name asc'
 
   # name:string
   attr_accessible :name
