@@ -16,11 +16,12 @@
 </dl>
 
 <% unless @playlist_albums.empty? %>
-<table class="table table-condensed table-striped">
+<table class="playlist-table table table-condensed table-striped">
   <thead>
     <tr>
       <th>&nbsp;</th>
       <th><span class="helper">Sort:</span> <%= link_to 'Position', playlist_path(@playlist, :order => nil) %> | <%= link_to 'Artist', playlist_path(@playlist, :order => 'artist') %> | <%= link_to 'Album', playlist_path(@playlist, :order => 'album') %></th>
+      <th class="actions">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
