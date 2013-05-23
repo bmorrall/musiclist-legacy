@@ -16,7 +16,7 @@
 </dl>
 
 <% unless @playlist_albums.empty? %>
-<table class="playlist-table table table-condensed table-striped">
+<table class="table table-condensed table-striped playlist-table" data-album-statuses-path="<%= album_statuses_path(format: :json) %>">
   <thead>
     <tr>
       <th>&nbsp;</th>
@@ -47,37 +47,8 @@
 <script type="text/javascript">
 //<!--
 $(function() {
-  $('a.played').click(function() {
-    $(this).find('span.label').toggleClass('label-warning');
-    var played = $(this).find('span.label').hasClass('label-warning');
-    var album_id = $(this).parent('td').parent('tr').attr('data-album');
-    $.ajax({
-      type: 'post',
-      data: {
-        album_status: {
-          'album_id': album_id,
-          'played': played
-        }
-      },
-      complete: function(request){},
-      url: "<%= album_statuses_path(format: :json) %>"
-    })
-  });
-  $('a.purchased').click(function() {
-    $(this).find('span.label').toggleClass('label-success');
-    var purchased = $(this).find('span.label').hasClass('label-success');
-    var album_id = $(this).parent('td').parent('tr').attr('data-album');
-    $.ajax({
-      type: 'post',
-      data: {
-        album_status: {
-          'album_id': album_id,
-          'purchased': purchased
-        }
-      },
-      complete: function(request){},
-      url: "<%= album_statuses_path(format: :json) %>"
-    })
+  $('table.playlist-table').each(function() {
+    window.playlistTable = new MusicList.PlaylistTable( $(this) );
   });
 });
 //-->
