@@ -24,7 +24,7 @@ class AlbumStatusesController < ApplicationController
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html { throw exception }
-      format.json { head :no_content, :status => :forbidden }
+      format.json { head :forbidden }
     end
   end
 

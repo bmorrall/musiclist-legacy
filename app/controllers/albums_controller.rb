@@ -98,7 +98,7 @@ class AlbumsController < ApplicationController
           redirect_to albums_url, :alert => exception.message
         end
       end
-      format.json { head :no_content, :status => :forbidden }
+      format.json { head :forbidden }
     end
   end
 
