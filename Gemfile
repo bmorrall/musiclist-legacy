@@ -23,7 +23,7 @@ gem 'cancan'
 
 gem 'jquery-rails'
 
-gem 'backbone-rails'
+gem "rails-backbone"
 
 gem 'simple_form'
 
