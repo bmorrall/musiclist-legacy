@@ -11,6 +11,7 @@ class Ability
     if user.persisted?
       can :manage, Album
       can :manage, Artist
+      can :create, AlbumStatus
       cannot :destroy, Artist do |artist|
         artist.albums.any?
       end
