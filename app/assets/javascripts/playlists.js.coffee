@@ -39,8 +39,8 @@ class MusicList.PlaylistAlbumView
 
     # Toggle the span and get the new value
     $purchasedSpan.removeClass('label-important');
-    $purchasedSpan.toggleClass("label-warning")
-    purchased = $purchasedSpan.hasClass("label-warning")
+    $purchasedSpan.toggleClass("label-success")
+    purchased = $purchasedSpan.hasClass("label-success")
     console.log('album purchased: ' + @album_id + '(' + purchased + ')')
 
     # Update the value via ajax
@@ -52,7 +52,7 @@ class MusicList.PlaylistAlbumView
           purchased: purchased
       error: (jqXHR, textStatus, errorThrown) ->
         console.error(textStatus, errorThrown)
-        $purchasedSpan.removeClass('label-warning');
+        $purchasedSpan.removeClass('label-success');
         $purchasedSpan.addClass('label-important');
         return
       url: @album_statuses_path
