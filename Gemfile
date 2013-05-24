@@ -23,7 +23,11 @@ gem 'cancan'
 
 gem 'jquery-rails'
 
+gem 'backbone-rails'
+
 gem 'simple_form'
+
+gem 'jbuilder'
 
 # Use unicorn as the web server
 # gem 'unicorn'
