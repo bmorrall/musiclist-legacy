@@ -33,7 +33,7 @@ class PlaylistsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: { playlist: @playlist } }
+      format.json # show,json.jbuilder
     end
   end
 

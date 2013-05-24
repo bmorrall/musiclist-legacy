@@ -25,17 +25,7 @@
     </tr>
   </thead>
   <tbody>
-<% @playlist_albums.each do |a| %>
-    <tr data-album="<%= a.id %>">
-      <td class="number"><%= a.position %></td>
-      <td><span class="artist"><%= a.album.artist.name %></span> - <%= a.album.title %></td>
-      <td>
-        <% album_status = @album_statuses.find_by_album_id(a.album_id) %>
-        <a class="played"><span class="label<% if album_status.present? && album_status.played? %> label-warning<% end %>">Played</span></a>
-        <a class="purchased"><span class="label<% if album_status.present? && album_status.purchased? %> label-success <% end %>">Purchased</span></a>
-      </td>
-    </tr>
-<% end %>
+    <!-- Content Replaced by AJAX -->
   </tbody>
 </table>
 <% end %>
@@ -47,9 +37,19 @@
 <script type="text/javascript">
 //<!--
 $(function() {
-  $('table.playlist-table').each(function() {
-    window.playlistTable = new MusicList.PlaylistTable( $(this) );
-  });
+  // $('table.playlist-table').each(function() {
+  //   window.playlistTable = new MusicList.PlaylistTable( $(this) );
+  // });
+  albums = new Musiclist.Models.Albums();
+
+  playlistTable = new Musiclist.Views.PlaylistTable({
+    el: $('table.playlist-table tbody'),
+    model: albums
+  })
+  playlistTable.render();
+
+  var preload_albums = <%= render(:partial => 'albums.json.jbuilder', :formats => :json).html_safe %>;
+  albums.reset(preload_albums.albums);
 });
 //-->
 </script>
