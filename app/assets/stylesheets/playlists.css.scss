@@ -19,6 +19,28 @@ tbody a:hover {
   background: transparent;
 }
 
+.playlist-sort, .playlist-filter {
+  display: inline;
+}
+.playlist-filter {
+  margin-left: 1em;
+  .radio.inline, .checkbox.inline {
+    padding-top: 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  .playlist-sort, .playlist-filter {
+    display: block;
+    margin-left: 0;
+  }
+  .playlist-filter .helper {
+    display: none;
+  }
+
+}
+
 @media only screen and (min-width: 768px) {
 
 	th.actions {
