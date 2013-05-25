@@ -22,6 +22,7 @@ gem 'devise'
 gem 'cancan'
 
 gem 'jquery-rails'
+gem 'jquery-rails-cdn'
 
 gem "rails-backbone"
 
