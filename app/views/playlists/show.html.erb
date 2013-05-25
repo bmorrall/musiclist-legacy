@@ -19,8 +19,7 @@
 <table class="table table-condensed table-striped playlist-table" data-album-statuses-path="<%= album_statuses_path(format: :json) %>">
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th>
+      <th colspan="3">
         <div class="playlist-sort">
           <span class="helper">Sort:</span>
           <%= link_to 'Position', playlist_path(@playlist, :order => nil), class: 'order-position' %> |
@@ -40,7 +39,6 @@
           </label>
         </div>
       </th>
-      <th class="actions">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
