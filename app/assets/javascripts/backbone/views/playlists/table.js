@@ -9,6 +9,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
 
   initialize: function() {
     this.filteredModels = new Musiclist.Models.Albums();
+    this.filteredModels.on('reset', this.renderAlbums, this);
     this.model.on('reset', this.updateFilter, this);
   },
 
@@ -51,8 +52,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
   renderAlbums: function() {
     var _this = this;
     this.$('tbody').empty();
-    
-    console.debug(this.filteredModels.length);
+
     this.filteredModels.each(function(album) {
       var albumView = new Musiclist.Views.PlaylistAlbum({ model: album });
       var rendered = albumView.render();
@@ -80,8 +80,6 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
 
       return display;
     }));
-
-    this.renderAlbums();
   }
 
 });
