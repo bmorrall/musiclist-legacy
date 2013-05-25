@@ -1,3 +1,7 @@
+String.prototype.paddingLeft = function (paddingValue) {
+   return String(paddingValue + this).slice(-paddingValue.length);
+};
+
 Musiclist.Views.PlaylistTable = Backbone.View.extend({
 
   events: {
@@ -23,7 +27,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
     e.preventDefault();
 
     this.filteredModels.comparator = function(album) {
-      return album.get("title").toLowerCase() + '_' + album.get("position");
+      return album.get("title").toLowerCase() + '_' + parseInt(album.get("position")).paddingLeft('0000');
     };
     this.filteredModels.sort();
   },
@@ -32,7 +36,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
     e.preventDefault();
 
     this.filteredModels.comparator = function(album) {
-      return album.get("artist").toLowerCase() + '_' + album.get("position");
+      return album.get("artist").toLowerCase() + '_' + parseInt(album.get("position")).paddingLeft('0000');
     };
     this.filteredModels.sort();
   },
