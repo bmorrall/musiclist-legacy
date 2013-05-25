@@ -4,7 +4,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="apple-mobile-web-app-title" content="Musiclist">
 <% end %>
-<%= content_tag :h2, @playlist.name %>
+<%= content_tag :h2, @playlist.name, class: 'hidden-phone' %>
 
 <div class="accordion" id="headerAccordion">
   <div class="accordion-group">
