@@ -14,6 +14,8 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
   },
 
   changeFilter: function(e) {
+    e.preventDefault();
+
     this.updateFilter();
   },
 
