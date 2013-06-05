@@ -14,6 +14,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
   initialize: function() {
     this.filteredModels = new Musiclist.Models.Albums();
     this.filteredModels.on('reset', this.renderAlbums, this);
+	this.filteredModels.on('sort', this.renderAlbums, this);
     this.model.on('reset', this.updateFilter, this);
   },
 
