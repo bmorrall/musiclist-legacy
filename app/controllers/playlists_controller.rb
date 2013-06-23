@@ -64,7 +64,7 @@ class PlaylistsController < ApplicationController
         format.json { render json: { playlist: @playlist }, status: :created, location: playlist_path(@playlist) }
       else
         format.html { render action: "new" }
-        format.json { render json: { errors: @playlist.errors }, status: :unprocessable_entity }
+        format.json { render_json_response :unprocessable_entity, errors: @playlist.errors }
       end
     end
   end
@@ -80,7 +80,7 @@ class PlaylistsController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: { errors: @playlist.errors }, status: :unprocessable_entity }
+        format.json { render_json_response :unprocessable_entity, errors: @playlist.errors }
       end
     end
   end
@@ -109,8 +109,15 @@ class PlaylistsController < ApplicationController
           redirect_to playlists_url, :alert => exception.message
         end
       end
-      format.json { head :forbidden }
+      format.json { render_json_error(:forbidden, :error => exception.message) }
     end
+  end
+
+  def render_json_error(status_code, options = [])
+    json_values = {
+      status: Rack::Utils.status_code(status_code)
+    }.merge(options)
+    render status: status_code, :json => json_values
   end
 
 end
