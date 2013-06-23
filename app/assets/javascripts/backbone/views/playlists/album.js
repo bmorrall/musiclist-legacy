@@ -18,15 +18,15 @@ Musiclist.Views.PlaylistAlbum = Backbone.View.extend({
 
   togglePlayed: function() {
     this.model.set('played', !this.model.get('played'));
-    this.updateAlbumStatus();
+    this.updateAlbumStatus(false);
   },
 
   togglePurchased: function() {
     this.model.set('purchased', !this.model.get('purchased'));
-    this.updateAlbumStatus();
+    this.updateAlbumStatus(true);
   },
 
-  updateAlbumStatus: function() {
+  updateAlbumStatus: function(purchased) {
     var albumStatus = new Musiclist.Models.AlbumStatus({
       album_id: this.model.id,
       played: this.model.get('played'),
@@ -34,7 +34,8 @@ Musiclist.Views.PlaylistAlbum = Backbone.View.extend({
     });
     var _this = this;
     var errorCallback = function(model, xhr, options) {
-      _this.$('.label').removeClass('label-warning label-success').addClass('label-important')
+      var selector = purchased ? _this.$('.purchased') : _this.$('.played');
+      selector.removeClass('label-warning label-success').addClass('label-important')
       if (xhr.statusText) {
         alert(xhr.status + " (" + xhr.statusText + ")");
       }
