@@ -32,15 +32,15 @@ Musiclist.Views.PlaylistAlbum = Backbone.View.extend({
       played: this.model.get('played'),
       purchased: this.model.get('purchased')
     });
-	var errorCallback = function(model, xhr, options) {
-		this.$('.label').removeClass('label-warning label-success').addClass('label-important')
-		if (xhr.statusText) {
-			alert(xhr.status + " (" + xhr.statusText + ")");
-		}
-		else {
-			alert("HTTP Error: " + xhr.status);
-		}
-	}
+    var errorCallback = function(model, xhr, options) {
+      this.$('.label').removeClass('label-warning label-success').addClass('label-important')
+      if (xhr.statusText) {
+        alert(xhr.status + " (" + xhr.statusText + ")");
+      }
+      else {
+        alert("HTTP Error: " + xhr.status);
+      }
+    }
     albumStatus.save(null, { error: errorCallback });
   }
 
