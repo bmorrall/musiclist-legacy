@@ -32,8 +32,9 @@ Musiclist.Views.PlaylistAlbum = Backbone.View.extend({
       played: this.model.get('played'),
       purchased: this.model.get('purchased')
     });
+    var _this = this;
     var errorCallback = function(model, xhr, options) {
-      this.$('.label').removeClass('label-warning label-success').addClass('label-important')
+      _this.$('.label').removeClass('label-warning label-success').addClass('label-important')
       if (xhr.statusText) {
         alert(xhr.status + " (" + xhr.statusText + ")");
       }
