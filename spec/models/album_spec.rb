@@ -11,4 +11,14 @@ describe Album do
   it { should belong_to(:artist) }
   it { should validate_presence_of(:artist_id) }
 
+  # genre:string
+  it { should allow_mass_assignment_of(:genre) }
+
+  # album_art:string
+  it { should allow_mass_assignment_of(:album_art) }
+
+  # year:string
+  it { should allow_mass_assignment_of(:year) }
+
+
 end

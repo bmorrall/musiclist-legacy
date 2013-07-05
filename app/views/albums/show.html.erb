@@ -3,6 +3,10 @@
   <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 </div>
 
+<% unless @album.album_art.blank? %>
+<div><%= image_tag @album.album_art, :alt => "#{@album.title}" %></div>
+<% end %>
+
 <dl class="dl-horizontal item-summary">
   <% unless @album.title.blank? %>
   <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
@@ -11,6 +15,14 @@
   <% if @album.artist.present? && can?(:read, @album.artist) %>
   <dt><strong><%= model_class.human_attribute_name(:artist) %>:</strong></dt>
   <dd><%= link_to @album.artist, artist_path(@album.artist) %></dd>
+  <% end %>
+  <% unless @album.genre.blank? %>
+  <dt><strong><%= model_class.human_attribute_name(:genre) %>:</strong></dt>
+  <dd><%= @album.genre %></dd>
+  <% end %>
+  <% unless @album.year.blank? %>
+  <dt><strong><%= model_class.human_attribute_name(:year) %>:</strong></dt>
+  <dd><%= @album.year %></dd>
   <% end %>
 </dl>
 

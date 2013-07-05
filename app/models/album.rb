@@ -15,6 +15,16 @@ class Album < ActiveRecord::Base
   attr_accessible :artist_id
   validates_presence_of :artist_id
 
+  # genre:string
+  attr_accessible :genre
+
+  # album_art:string
+  attr_accessible :album_art
+
+  # year:string
+  attr_accessible :year
+
+  # Album.all.each { |album| album.import_meta_data if album.meta_datas.empty? }
   def import_meta_data
     query = itunes_search_query
     puts query
