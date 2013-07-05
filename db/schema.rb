@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520101716) do
+ActiveRecord::Schema.define(:version => 20130705062413) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -67,6 +67,17 @@ ActiveRecord::Schema.define(:version => 20130520101716) do
     t.datetime "updated_at", :null => false
     t.string   "sort_name"
   end
+
+  create_table "meta_data", :force => true do |t|
+    t.string   "source"
+    t.text     "data"
+    t.integer  "item_id"
+    t.string   "item_type"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "meta_data", ["item_id"], :name => "index_meta_data_on_item_id"
 
   create_table "playlist_albums", :force => true do |t|
     t.integer "playlist_id"
