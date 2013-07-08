@@ -23,7 +23,7 @@ describe Album do
 
   describe '#extract_editions' do
     it 'converts the album title' do
-      album = FactoryGirl.create(:album, :title => 'Ultimate Collection (Bonus Cd) (W/Bonus) (Bonus Tracks) (Hybr) (Rmst) (Dlx) (Dig)')
+      album = FactoryGirl.create(:album, :title => 'Ultimate Collection (Bonus Cd) (W/Bonus) (Bonus Tracks) (Hybr) (Rmst) (Spec) (Dlx) (Dig)')
       puts album.title
       album.extract_editions
       album.save!

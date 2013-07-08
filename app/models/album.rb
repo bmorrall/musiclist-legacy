@@ -29,7 +29,7 @@ class Album < ActiveRecord::Base
 
   def extract_editions
     self.editions ||= []
-    known_tags = ['Dlx', 'Dig', 'Enh', 'Exp', 'Hybr', 'Rmst', 'Bonus Cd', 'Bonus Tracks', 'W/Bonus']
+    known_tags = ['Box', 'Cd & Dvd', 'Dlx', 'Dig', 'Enh', 'Exp', 'Ger', 'Gold', 'Hybr', 'Ltd', 'Rmst', 'Spec', 'Bonus Cd', 'Bonus Track', 'Bonus Tracks', 'Uk Edition', 'W/Bonus']
     renamed = self.title
     known_tags.each do |tag|
       regex = /\(#{tag}\)/i
