@@ -24,6 +24,12 @@
   <dt><strong><%= model_class.human_attribute_name(:year) %>:</strong></dt>
   <dd><%= @album.year %></dd>
   <% end %>
+  <% if @album.editions && @album.editions.any? %>
+    <dt><strong><%= model_class.human_attribute_name(:editions) %>:</strong></dt>
+    <% @album.editions.each do |edition| %>
+      <dd><%= edition %></dd>
+    <% end %>
+  <% end %>
 </dl>
 
 <div class="form-actions">
