@@ -27,6 +27,7 @@ class Album < ActiveRecord::Base
   # year:string
   attr_accessible :year
 
+  # Album.all.each { |a| a.extract_editions; a.save! }
   def extract_editions
     self.editions ||= []
     known_tags = ['Box', 'Cd & Dvd', 'Dlx', 'Dig', 'Enh', 'Exp', 'Ger', 'Gold', 'Hybr', 'Ltd', 'Rmst', 'Spec', 'Bonus Cd', 'Bonus Track', 'Bonus Tracks', 'Uk Edition', 'W/Bonus']
