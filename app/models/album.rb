@@ -30,15 +30,17 @@ class Album < ActiveRecord::Base
   def extract_editions
     self.editions ||= []
     known_tags = ['Dlx', 'Dig', 'Enh', 'Exp', 'Hybr', 'Rmst', 'Bonus Cd', 'Bonus Tracks', 'W/Bonus']
+    renamed = self.title
     known_tags.each do |tag|
       regex = /\(#{tag}\)/i
-      if self.title =~ regex
+      if renamed =~ regex
         editions << tag unless editions.include? tag
-        self.title.sub! regex, ''
+        renamed.sub! regex, ''
       end
     end
-    self.title.gsub!(/\s{2}/, ' ') while title =~ /\s{2}/
-    self.title.gsub!(/\s\Z/, '')
+    renamed.gsub!(/\s{2}/, ' ') while renamed =~ /\s{2}/
+    renamed.gsub!(/\s\Z/, '')
+    self.title = renamed
   end
 
   # Album.all.each { |album| album.import_meta_data if album.meta_datas.empty? }
