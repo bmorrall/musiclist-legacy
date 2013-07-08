@@ -35,11 +35,11 @@ class Album < ActiveRecord::Base
       regex = /\(#{tag}\)/i
       if renamed =~ regex
         editions << tag unless editions.include? tag
-        renamed.sub! regex, ''
+        renamed = renamed.sub regex, ''
       end
     end
-    renamed.gsub!(/\s{2}/, ' ') while renamed =~ /\s{2}/
-    renamed.gsub!(/\s\Z/, '')
+    renamed = renamed.gsub(/\s{2}/, ' ') while renamed =~ /\s{2}/
+    renamed = renamed.gsub(/\s\Z/, '')
     self.title = renamed
   end
 
