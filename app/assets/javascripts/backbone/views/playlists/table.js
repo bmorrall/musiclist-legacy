@@ -48,6 +48,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
 
     this.filteredModels.comparator = function(album) {
       var prefix = album.get("genre") ? album.get("genre").toLowerCase() : '';
+      prefix += '_' + album.get("artist").toLowerCase();
       prefix += '_' + album.get("position").toString().paddingLeft('0000');
       return prefix;
     };
