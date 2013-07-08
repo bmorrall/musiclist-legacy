@@ -27,6 +27,8 @@ class PlaylistsController < ApplicationController
       @playlist_albums = @playlist_albums.joins(:album).order('albums.title, position asc')
     when 'artist'
       @playlist_albums = @playlist_albums.joins(:album => [:artist]).order('artists.sort_name asc, artists.name asc, position asc')
+    when 'genre'
+      @playlist_albums = @playlist_albums.joins(:album => [:artist]).order('genre asc')
     else
       @playlist_albums = @playlist_albums.order(:position)
     end

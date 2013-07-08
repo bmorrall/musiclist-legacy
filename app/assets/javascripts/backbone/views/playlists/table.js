@@ -7,6 +7,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
   events: {
     'click a.order-album': 'orderAlbum',
     'click a.order-artist': 'orderArtist',
+    'click a.order-genre': 'orderGenre',
     'click a.order-position': 'orderPosition',
     'change #album-played, #album-purchased, #album-unheard': 'changeFilter'
   },
@@ -14,7 +15,7 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
   initialize: function() {
     this.filteredModels = new Musiclist.Models.Albums();
     this.filteredModels.on('reset', this.renderAlbums, this);
-	this.filteredModels.on('sort', this.renderAlbums, this);
+    this.filteredModels.on('sort', this.renderAlbums, this);
     this.model.on('reset', this.updateFilter, this);
   },
 
@@ -41,6 +42,16 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
     };
     this.filteredModels.sort();
   },
+
+  orderGenre: function(e) {
+    e.preventDefault();
+
+    this.filteredModels.comparator = function(album) {
+      return album.get("genre").toLowerCase() + '_' + album.get("position").toString().paddingLeft('0000');
+    };
+    this.filteredModels.sort();
+  },
+  
 
   orderPosition: function(e) {
     e.preventDefault();
