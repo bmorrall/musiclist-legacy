@@ -26,6 +26,7 @@ describe Album do
       album = FactoryGirl.create(:album, :title => 'Ultimate Collection (Bonus Cd) (W/Bonus) (Bonus Tracks) (Hybr) (Rmst) (Dlx) (Dig)')
       album.extract_editions
 
+      album.editions.should include('Bonus Tracks')
       album.editions.should include('Rmst')
       album.editions.should include('Dlx')
       album.editions.should include('Dig')
