@@ -47,7 +47,9 @@ Musiclist.Views.PlaylistTable = Backbone.View.extend({
     e.preventDefault();
 
     this.filteredModels.comparator = function(album) {
-      return album.get("genre").toLowerCase() + '_' + album.get("position").toString().paddingLeft('0000');
+      var prefix = album.get("genre") ? album.get("genre").toLowerCase() : '';
+      prefix += '_' + album.get("position").toString().paddingLeft('0000');
+      return prefix;
     };
     this.filteredModels.sort();
   },
