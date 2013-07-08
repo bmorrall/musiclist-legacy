@@ -21,4 +21,16 @@ describe Album do
   it { should allow_mass_assignment_of(:year) }
 
 
+  describe '#extract_editions' do
+    it 'converts the album title' do
+      album = FactoryGirl.create(:album, :title => 'Ultimate Collection (Bonus Cd) (W/Bonus) (Bonus Tracks) (Hybr) (Rmst) (Dlx) (Dig)')
+      album.extract_editions
+
+      album.editions.should include('Rmst')
+      album.editions.should include('Dlx')
+      album.editions.should include('Dig')
+      album.title.should eq('Ultimate Collection')
+    end
+  end
+
 end

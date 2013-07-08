@@ -15,6 +15,9 @@ class Album < ActiveRecord::Base
   attr_accessible :artist_id
   validates_presence_of :artist_id
 
+  # editions:text
+  serialize :editions, Array
+
   # genre:string
   attr_accessible :genre
 
@@ -23,6 +26,20 @@ class Album < ActiveRecord::Base
 
   # year:string
   attr_accessible :year
+
+  def extract_editions
+    self.editions ||= []
+    known_tags = ['Dlx', 'Dig', 'Enh', 'Exp', 'Hybr', 'Rmst', 'Bonus Cd', 'Bonus Tracks', 'W/Bonus']
+    known_tags.each do |tag|
+      regex = /\(#{tag}\)/i
+      if title =~ regex
+        editions << tag
+        title.sub! regex, ''
+      end
+    end
+    title.gsub!(/\s{2}/, ' ') while title =~ /\s{2}/
+    title.gsub!(/\s\Z/, '')
+  end
 
   # Album.all.each { |album| album.import_meta_data if album.meta_datas.empty? }
   def import_meta_data
