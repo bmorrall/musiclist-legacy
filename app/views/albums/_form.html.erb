@@ -3,7 +3,7 @@
 
   <div class="form-inputs">
     <%= f.input :title %>
-    <%= f.association :artist %>
+    <%= f.association :artist, :collection => @artists %>
     <%= f.input :genre %>
     <%= f.input :album_art %>
     <%= f.input :year %>

@@ -1,6 +1,7 @@
 class AlbumsController < ApplicationController
   load_resource :album
   authorize_resource :album
+  before_filter :load_artists, :only => [:new, :edit, :create, :update]
 
   # GET /albums
   # GET /albums.json
@@ -87,6 +88,10 @@ class AlbumsController < ApplicationController
   end
 
   protected
+
+  def load_artists
+    @artists ||= Artist.order('sort_name ASC, name ASC')
+  end
 
   # Capture any access violations, ensure User isn't unnessisarily redirected to root
   rescue_from CanCan::AccessDenied do |exception|
